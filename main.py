@@ -1,16 +1,35 @@
-# This is a sample Python script.
+import webbrowser
+import speech_recognition as sr
+import os
+import openai
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+def say(text):
+    os.system(f"say {text}")
+
+def takeCommand():
+    r=sr.Recognizer()
+    with sr.Microphone() as source:
+        r.pause_threshold=1
+        audio=r.listen(source)
+        try:
+            print("Recognizing...")
+            query=r.recognize_google(audio,language='en-in')
+            print(f"User said: {query}")
+            return query
+        except Exception as e:
+            return "Some error happened"
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    print('PyCharm')
+    say("I am your personal assistant. How can I help you?")
+    while True:
+        print("Listening......")
+        query=takeCommand()
+        sites=[["youtube","https://www.youtube.com"],["google","https://www.google.com"],["wikipedia","https://www.wikipedia.com"],]
+        for site in sites:
+            if f"Open {site[0]}".lower() in query.lower():
+                say(f"Opening {site[0]}")
+                webbrowser.open(site[1])
+       # say(query)
